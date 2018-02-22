@@ -12,11 +12,10 @@ reddit = praw.Reddit(user_agent='CommentScraper (by /u/ConnectBad)',
 
 submission = reddit.submission(url='https://www.reddit.com/r/worldnews/comments/7za8v1/trump_endorses_guns_for_teachers_to_stop_shootings/')
 
-myFile = open('topcomments.csv', 'w') 
+myFile = open('all_reddit_comments.csv', 'w') 
 writer = csv.writer(myFile, dialect='excel')
 writer.writerow(['Top Comments'])
 
 submission.comments.replace_more(limit=None)
 for comment in submission.comments.list():
     writer.writerow([comment.body.encode('utf-8')])
-    
