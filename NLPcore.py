@@ -132,8 +132,8 @@ if __name__ == "__main__":
 
     splitter = Splitter()
     postagger = POSTagger()
-    dicttagger = DictionaryTagger([ 'dicts/positive.yml', 'dicts/data(4).yml', 
-                                    'dicts/inc.yml', 'dicts/dec.yml', 'dicts/inv.yml'])
+    dicttagger = DictionaryTagger([ 'positive.yml', 'negative.yml', 
+                                    'inc.yml', 'dec.yml', 'inv.yml'])
 
     splitted_sentences = splitter.split(text)
     pprint(splitted_sentences)
