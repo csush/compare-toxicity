@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from pprint import pprint
 import nltk
 import yaml
@@ -127,8 +129,7 @@ def sentence_score(sentence_tokens, previous_token, acum_score):
 def sentiment_score(review):
     return sum([sentence_score(sentence, None, 0.0) for sentence in review])
 
-if __name__ == "__main__":
-    text = """shit shit FU(."""
+def sentiment_anlysis(text):
 
     splitter = Splitter()
     postagger = POSTagger()
@@ -136,16 +137,29 @@ if __name__ == "__main__":
                                     'inc.yml', 'dec.yml', 'inv.yml'])
 
     splitted_sentences = splitter.split(text)
-    pprint(splitted_sentences)
+    ## pprint(splitted_sentences)
 
     pos_tagged_sentences = postagger.pos_tag(splitted_sentences)
-    pprint(pos_tagged_sentences)
+    ##pprint(pos_tagged_sentences)
 
     dict_tagged_sentences = dicttagger.tag(pos_tagged_sentences)
-    pprint(dict_tagged_sentences)
+    ##pprint(dict_tagged_sentences)
 
-    print("analyzing sentiment...")
+    #print("analyzing sentiment...")
     score = sentiment_score(dict_tagged_sentences)
     print(score)
 
+import csv
+#import nltk
 
+#from nltk.sentiment.vader import SentimentIntensityAnalyzer
+#analyzer = SentimentIntensityAnalyzer()
+
+with open('another_reddit_comments.csv', 'rb') as csvfile:
+    spamreader = csv.reader(csvfile, delimiter='\t')
+    for row in spamreader:
+        #print row[0]
+        line = unicode(row[0], 'utf-8').lower();
+        sentiment_anlysis(line)
+        #result = analyzer.polarity_scores(line)
+        #print(result)
