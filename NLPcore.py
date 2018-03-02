@@ -146,7 +146,7 @@ def sentiment_anlysis(text):
 
     #print("analyzing sentiment...")
     score = sentiment_score(dict_tagged_sentences)
-    print(score / len(text))
+    print(score / len(splitted_sentences))
     #print(score)
 
     
