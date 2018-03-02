@@ -146,7 +146,14 @@ def sentiment_anlysis(text):
 
     #print("analyzing sentiment...")
     score = sentiment_score(dict_tagged_sentences)
-    print(score / len(splitted_sentences))
+    length = 1
+    if score != 0:
+        lengthlist = []
+        for n in splitted_sentences:
+            lengthlist = lengthlist + n
+        length = len(lengthlist)    
+    return (score / (length))
+    #print(score / len(splitted_sentences))
     #print(score)
 
     
@@ -160,11 +167,14 @@ with open('another_reddit_comments.csv', 'rb') as csvfile:
     spamreader = csv.reader(csvfile, delimiter='\t')
     i = 0;
     for row in spamreader:
+        i += 1
+        line = unicode(row[0], 'utf-8').lower();
+        score = sentiment_anlysis(line)
+        if score == 0:
+            continue
         print 'index at ', i
         print  row[0]
-        line = unicode(row[0], 'utf-8').lower();
-        sentiment_anlysis(line) 
+        print score    
         result = analyzer.polarity_scores(line)
         print(result)
-        i += 1
         print '-----------'
