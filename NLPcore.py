@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 from pprint import pprint
 import nltk
@@ -133,8 +132,8 @@ def sentiment_anlysis(text):
 
     splitter = Splitter()
     postagger = POSTagger()
-    dicttagger = DictionaryTagger([ 'positive.yml', 'negative.yml', 
-                                    'inc.yml', 'dec.yml', 'inv.yml'])
+    dicttagger = DictionaryTagger([ 'dicts/positive.yml', 'dicts/negative.yml', 
+                                    'dicts/inc.yml', 'dicts/dec.yml', 'dicts/inv.yml'])
 
     splitted_sentences = splitter.split(text)
     ## pprint(splitted_sentences)
@@ -147,19 +146,25 @@ def sentiment_anlysis(text):
 
     #print("analyzing sentiment...")
     score = sentiment_score(dict_tagged_sentences)
-    print(score)
+    print(score / len(text))
+    #print(score)
 
+    
 import csv
-#import nltk
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+analyzer = SentimentIntensityAnalyzer()
 
-#from nltk.sentiment.vader import SentimentIntensityAnalyzer
-#analyzer = SentimentIntensityAnalyzer()
 
 with open('another_reddit_comments.csv', 'rb') as csvfile:
     spamreader = csv.reader(csvfile, delimiter='\t')
+    i = 0;
     for row in spamreader:
-        #print row[0]
+        print 'index at ', i
+        print  row[0]
         line = unicode(row[0], 'utf-8').lower();
-        sentiment_anlysis(line)
-        #result = analyzer.polarity_scores(line)
-        #print(result)
+        sentiment_anlysis(line) 
+        result = analyzer.polarity_scores(line)
+        print(result)
+        i += 1
+        print '-----------'
