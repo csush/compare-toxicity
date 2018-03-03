@@ -168,9 +168,14 @@ with open('another_reddit_comments.csv', 'rb') as csvfile:
     i = 0;
     for row in spamreader:
         i += 1
-        line = unicode(row[0], 'utf-8').lower();
+        
+        try:
+            line = unicode(row[0], 'utf-8').lower()
+        except IndexError:
+            continue
+            
         score = sentiment_anlysis(line)
-        if score == 0:
+        if score >= 0:
             continue
         print 'index at ', i
         print  row[0]
