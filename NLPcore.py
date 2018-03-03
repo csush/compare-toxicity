@@ -163,23 +163,30 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 analyzer = SentimentIntensityAnalyzer()
 
 
-with open('another_reddit_comments.csv', 'rb') as csvfile:
-    spamreader = csv.reader(csvfile, delimiter='\t')
-    i = 0;
-    for row in spamreader:
-        i += 1
-        
-        try:
-            line = unicode(row[0], 'utf-8').lower()
-        except IndexError:
-            continue
+with open('Analyzed_result.csv', 'w') as csvfile:
+    spamwriter = csv.DictWriter(csvfile,fieldnames=['Message', 'Score', 'NLTK_Neg', 'NLTK_Neu','NLTK_Pos', 'NLTK_Compound'])
+    spamwriter.writeheader()
+    
+    with open('another_reddit_comments.csv', 'rb') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter='\t')
+        i = 0;
+        for row in spamreader:
+            i += 1
+
+            try:
+                line = unicode(row[0], 'utf-8').lower()
+            except IndexError:
+                continue
+
+            score = sentiment_anlysis(line)
+            if score >= 0:
+                continue
+            print 'index at ', i
+            print  row[0]
+            print score    
+            result = analyzer.polarity_scores(line)
+            print(result)
+            print '-----------'
             
-        score = sentiment_anlysis(line)
-        if score >= 0:
-            continue
-        print 'index at ', i
-        print  row[0]
-        print score    
-        result = analyzer.polarity_scores(line)
-        print(result)
-        print '-----------'
+            my_result = {'Message': row[0], 'Score': score, 'NLTK_Neg': result['neg'], 'NLTK_Neu': result['neu'], 'NLTK_Pos': result['pos'], 'NLTK_Compound': result['compound']}
+            spamwriter.writerow(my_result)
