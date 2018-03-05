@@ -5,7 +5,7 @@ import yaml
 import sys
 import os
 import re
-
+import string
 class Splitter(object):
 
     def __init__(self):
@@ -127,6 +127,51 @@ def sentence_score(sentence_tokens, previous_token, acum_score):
 
 def sentiment_score(review):
     return sum([sentence_score(sentence, None, 0.0) for sentence in review])
+def normalize(f):
+    f = [x.lower() for x in f]
+    f = [x.replace("\\n"," ") for x in f]        
+    f = [x.replace("\\t"," ") for x in f]        
+    f = [x.replace("\\xa0"," ") for x in f]
+    f = [x.replace("\\xc2"," ") for x in f]
+
+    #f = [x.replace(","," ").replace("."," ").replace(" ", "  ") for x in f]
+    #f = [re.subn(" ([a-z]) ","\\1", x)[0] for x in f]  
+    #f = [x.replace("  "," ") for x in f]
+
+    f = [x.replace(" u "," you ") for x in f]
+    f = [x.replace(" em "," them ") for x in f]
+    f = [x.replace(" da "," the ") for x in f]
+    f = [x.replace(" yo "," you ") for x in f]
+    f = [x.replace(" ur "," you ") for x in f]
+    #f = [x.replace(" ur "," your ") for x in f]
+    #f = [x.replace(" ur "," you're ") for x in f]
+    
+    f = [x.replace("won't", "will not") for x in f]
+    f = [x.replace("can't", "cannot") for x in f]
+    f = [x.replace("i'm", "i am") for x in f]
+    f = [x.replace(" im ", " i am ") for x in f]
+    f = [x.replace("ain't", "is not") for x in f]
+    f = [x.replace("'ll", " will") for x in f]
+    f = [x.replace("'t", " not") for x in f]
+    f = [x.replace("'ve", " have") for x in f]
+    f = [x.replace("'s", " is") for x in f]
+    f = [x.replace("'re", " are") for x in f]
+    f = [x.replace("'d", " would") for x in f]
+
+    #f = [x.replace("outta", "out of") for x in f]
+
+    # stemming    
+    #f = [re.subn("ies( |$)", "y ", x)[0].strip() for x in f]
+    #f = [re.subn("([abcdefghijklmnopqrstuvwxyz])s( |$)", "\\1 ", x)[0].strip() for x in f]
+    #f = [re.subn("s( |$)", " ", x)[0].strip() for x in f]
+    #f = [re.subn("ing( |$)", " ", x)[0].strip() for x in f]
+    #f = [x.replace("tard ", " ") for x in f]
+        
+    #f = [re.subn(" [*$%&#@][*$%&#@]+"," xexp ", x)[0].strip() for x in f]
+    #f = [re.subn(" [0-9]+ "," DD ", x)[0].strip() for x in f]
+    #f = [re.subn("<\S*>","", x)[0].strip() for x in f]    
+    return f
+
 
 def sentiment_anlysis(text):
 
@@ -134,9 +179,14 @@ def sentiment_anlysis(text):
     postagger = POSTagger()
     dicttagger = DictionaryTagger([ 'dicts/positive.yml', 'dicts/negative.yml', 
                                     'dicts/inc.yml', 'dicts/dec.yml', 'dicts/inv.yml'])
-
-    splitted_sentences = splitter.split(text)
-    ## pprint(splitted_sentences)
+    punctuation = set(string.punctuation)
+    text_n = normalize(text.split(' '))
+    text_new = []
+    for w in text_n:
+        w = ''.join([c for c in w.lower() if not c in punctuation])
+        text_new.append(w);
+    string_new = " ".join(text_new)
+    splitted_sentences = splitter.split(string_new)
 
     pos_tagged_sentences = postagger.pos_tag(splitted_sentences)
     ##pprint(pos_tagged_sentences)
