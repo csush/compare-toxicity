@@ -21,3 +21,4 @@ for submission in subreddit.hot(limit=10):
 	submission.comments.replace_more(limit=1000)
 	for comment in submission.comments.list():
 		writer.writerow([comment.body.encode('utf-8')])
+myFile.close()
