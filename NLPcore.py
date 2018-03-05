@@ -220,9 +220,9 @@ with open('Analyzed_result.csv', 'w') as csvfile:
         i = 0;
         for row in spamreader:
             i += 1
-
+            ## stack overflow for recursion
             try:
-                line = unicode(row[0], 'utf-8').lower()
+                line = unicode(row[0][0:min(900,len(row[0])], 'utf-8').lower()
             except IndexError:
                 continue
 
