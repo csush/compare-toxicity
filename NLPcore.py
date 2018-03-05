@@ -211,7 +211,7 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 analyzer = SentimentIntensityAnalyzer()
 
 
-with open('Analyzed_result.csv', 'w') as csvfile:
+with open('Analyzed_result.csv', 'wb') as csvfile:
     spamwriter = csv.DictWriter(csvfile,fieldnames=['Message', 'Score', 'NLTK_Neg', 'NLTK_Neu','NLTK_Pos', 'NLTK_Compound'])
     spamwriter.writeheader()
     
