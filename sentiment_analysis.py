@@ -1,4 +1,3 @@
-
 from pprint import pprint
 import nltk
 import yaml
@@ -189,10 +188,10 @@ def sentiment_anlysis(text):
     pos_tagged_sentences = postagger.pos_tag(splitted_sentences)
     ##pprint(pos_tagged_sentences)
 
-    dict_tagged_sentences = dicttagger.tag(pos_tagged_sentences)
-    ##pprint(dict_tagged_sentences)
 
     #print("analyzing sentiment...")
+    dict_tagged_sentences = dicttagger.tag(pos_tagged_sentences)
+    ##pprint(dict_tagged_sentences)
     score = sentiment_score(dict_tagged_sentences)
     length = 1
     if score != 0:
@@ -201,8 +200,13 @@ def sentiment_anlysis(text):
             lengthlist = lengthlist + n
         length = len(lengthlist)    
     return (score / (length))
-    #print(score / len(splitted_sentences))
-    #print(score)
+
+
+def plot_result(x):
+    import matplotlib.pyplot as plt
+    plt.hist(x)
+    plt.title('Histogram of score distribution')
+    plt.show()
 
     
 import csv
@@ -210,31 +214,39 @@ import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 analyzer = SentimentIntensityAnalyzer()
 
+filename = 'another_reddit_comments.csv'
+with open('Analyzed_overall_result.csv', 'wb') as csvfile:
+    spamwriter1 = csv.DictWriter(csvfile,fieldnames=['score'])
+    spamwriter1.writeheader()
+    with open('Analyzed_score_result.csv', 'wb') as csvfile:
+        spamwriter = csv.DictWriter(csvfile,fieldnames=['Message', 'Abusive_Score', 'NLTK_Neg', 'NLTK_Neu','NLTK_Pos', 'NLTK_Compound', 'Overall_score'])
+        spamwriter.writeheader()
+        score_sheet = []
+        with open(filename, 'rb') as csvfile:
+            print 'Start doing sentiments analysis with file',filename
+            spamreader = csv.reader(csvfile, delimiter='\t')
+            i = 0;
+            for row in spamreader:
+                i += 1
+                ## stack overflow for recursion
+                try:
+                    line = unicode(row[0][0:min(900,len(row[0]))], 'utf-8').lower()
+                except IndexError:
+                    continue
+                score = sentiment_anlysis(line)
 
-with open('Analyzed_result.csv', 'wb') as csvfile:
-    spamwriter = csv.DictWriter(csvfile,fieldnames=['Message', 'Score', 'NLTK_Neg', 'NLTK_Neu','NLTK_Pos', 'NLTK_Compound'])
-    spamwriter.writeheader()
-    
-    with open('another_reddit_comments.csv', 'rb') as csvfile:
-        spamreader = csv.reader(csvfile, delimiter='\t')
-        i = 0;
-        for row in spamreader:
-            i += 1
-            ## stack overflow for recursion
-            try:
-                line = unicode(row[0][0:min(900,len(row[0]))], 'utf-8').lower()
-            except IndexError:
-                continue
-
-            score = sentiment_anlysis(line)
-            if score >= 0:
-                continue
-            print 'index at ', i
-            print  row[0]
-            print score    
-            result = analyzer.polarity_scores(line)
-            print(result)
-            print '-----------'
-            
-            my_result = {'Message': row[0], 'Score': score, 'NLTK_Neg': result['neg'], 'NLTK_Neu': result['neu'], 'NLTK_Pos': result['pos'], 'NLTK_Compound': result['compound']}
-            spamwriter.writerow(my_result)
+                #print 'index at ', i
+                #print  row[0]
+                #print score    
+                result = analyzer.polarity_scores(line)
+                #print(result)
+                if(score != 0):
+                    overall_score = max(min(score/(score*score+15)**(1/2.0),-1*result['neg']),-1)
+                else:
+                    overall_score = result['compound']
+                score_sheet.append(overall_score)
+                spamwriter1.writerow({'score':overall_score})
+                my_result = {'Message': row[0], 'Abusive_Score': score, 'NLTK_Neg': result['neg'], 'NLTK_Neu': result['neu'], 'NLTK_Pos': result['pos'], 'NLTK_Compound': result['compound'],'Overall_score' : overall_score}
+                if(score !=0):
+                    spamwriter.writerow(my_result)
+plot_result(score_sheet)
