@@ -13,7 +13,7 @@ subreddit = reddit.subreddit('hockey')
 
 #submission = reddit.submission(url='https://www.reddit.com/r/worldnews/comments/7za8v1/trump_endorses_guns_for_teachers_to_stop_shootings/')
 
-myFile = open('hockey_reddit_comments.csv', 'w') 
+myFile = open('/comments/hockey_reddit_comments.csv', 'w') 
 writer = csv.writer(myFile, dialect='excel')
 writer.writerow(['First 1000 Comments for each post on Hot Page\'s top 50'])
 
