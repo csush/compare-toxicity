@@ -241,7 +241,7 @@ with open('Analyzed_overall_result.csv', 'wb') as csvfile:
                 result = analyzer.polarity_scores(line)
                 #print(result)
                 if(score != 0):
-                    overall_score = max(min(score/(score*score+15)**(1/2.0),-1*result['neg']),-1)
+                    overall_score = max(min(score/(score*score+15)**(1/2.0)*10,-1*result['neg']),-1)
                 else:
                     overall_score = result['compound']
                 score_sheet.append(overall_score)
