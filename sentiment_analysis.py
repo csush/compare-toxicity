@@ -245,7 +245,7 @@ with open('Analyzed_overall_result.csv', 'wb') as csvfile:
                 else:
                     overall_score = result['compound']
                 score_sheet.append(overall_score)
-                spamwriter1.writerow(overall_score)
+                spamwriter1.writerow({'score':overall_score})
                 my_result = {'Message': row[0], 'Abusive_Score': score, 'NLTK_Neg': result['neg'], 'NLTK_Neu': result['neu'], 'NLTK_Pos': result['pos'], 'NLTK_Compound': result['compound'],'Overall_score' : overall_score}
                 if(score !=0):
                     spamwriter.writerow(my_result)
