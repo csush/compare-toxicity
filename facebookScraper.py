@@ -146,7 +146,7 @@ def scrapeFacebookPageFeedStatus(page_id, access_token, since_date, until_date):
         num_processed = 0
         scrape_starttime = datetime.datetime.now()
         after = ''
-        base = "https://graph.facebook.com/v2.9"
+        base = "https://graph.facebook.com/v2.12"
         node = "/{}/posts".format(page_id)
         parameters = "/?limit={}&access_token={}".format(100, access_token)
         since = "&since={}".format(since_date) if since_date \
@@ -216,7 +216,7 @@ def scrapeFacebookPageFeedComments(page_id, access_token):
         num_processed = 0
         scrape_starttime = datetime.datetime.now()
         after = ''
-        base = "https://graph.facebook.com/v2.9"
+        base = "https://graph.facebook.com/v2.12"
         parameters = "/?limit={}&access_token={}".format(
             100, access_token)
 
