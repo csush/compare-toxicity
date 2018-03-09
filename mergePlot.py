@@ -1,15 +1,17 @@
 import csv
 import os
 import matplotlib.pyplot as plt
-
+import numpy as np
 def plot_result(x):
-    import matplotlib.pyplot as plt
-    plt.hist(x)
+    plt.xlim([-1, 1])
+    #bins = np.arange(-1, 1, 20)
+    #np.histogram(x, bins=20)
+    plt.hist(x, bins = 20)
     plt.title('Histogram of score distribution')
     plt.show()
 
-if __name__ == '__main__':
-    fileDir = './cutted_overall_result/facebook'
+def plot_kkk(dictname):
+    fileDir = dictname
     fileList = []
     score_sheet = []
     
@@ -20,12 +22,20 @@ if __name__ == '__main__':
 
     # read all file in the fileList and append score to score_sheet
     for filename in fileList:
+        i = 0;
         with open (filename, 'rb') as csvfile:
             spamreader = csv.reader(csvfile, delimiter='\t')
-
+            print(filename)
             for row in spamreader:
-                overall_score = row[0]
-                score_sheet.append(overall_score)
-
-    print("Data Volumn: ", len(score_sheet)) 
+                if i == 0:
+                    i = 1;
+                else:
+                    overall_score = float(row[0])
+                    #print(overall_score)
+                    score_sheet.append(overall_score)
+               
+    print(type(score_sheet[0]))
+    #print("Data Volumn: ", len(score_sheet))
+    np.array(score_sheet).astype(np.float)
     plot_result(score_sheet)
+    return score_sheet
