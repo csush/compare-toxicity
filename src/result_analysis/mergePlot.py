@@ -7,10 +7,22 @@ def plot_result(x):
     #bins = np.arange(-1, 1, 20)
     #np.histogram(x, bins=20)
     plt.hist(x, bins = 20)
-    plt.title('Histogram of score distribution')
+    plt.title("News Comments Score")
+    plt.xlabel("Score")
+    plt.ylabel("Number of Comments")
     plt.show()
+    
+def mycsv_reader(csv_reader): 
+  while True: 
+    try: 
+      yield next(csv_reader) 
+    except csv.Error: 
+      # error handling what you want.
+      pass
+    continue 
+  return
 
-def plot_kkk(dictname):
+def myPlot(dictname):
     fileDir = dictname
     fileList = []
     score_sheet = []
@@ -24,7 +36,7 @@ def plot_kkk(dictname):
     for filename in fileList:
         i = 0;
         with open (filename, 'rb') as csvfile:
-            spamreader = csv.reader(csvfile, delimiter='\t')
+            spamreader = mycsv_reader(csv.reader(csvfile, delimiter='\t'))
             print(filename)
             for row in spamreader:
                 if i == 0:
@@ -38,4 +50,4 @@ def plot_kkk(dictname):
     #print("Data Volumn: ", len(score_sheet))
     np.array(score_sheet).astype(np.float)
     plot_result(score_sheet)
-    return score_sheet
+    #return score_sheet
