@@ -7,12 +7,12 @@ In the real world, people treat others with politeness and hospitality, but in t
 
 ## Getting Started
 
-### Clone the repository:
+**Clone the repository:**
 ```sh
 $ git clone https://github.com/csush/compare-toxicity
 ```
 
-### Installing Required Packages:
+**Installing Required Packages:**
 
 Install praw package: The Python Reddit API Wrapper
 ```sh
@@ -27,4 +27,4 @@ $ sudo pip install nltk
 *You can also installing packages in Anaconda
  
 
-### Running Demo:
+**Running Demo:**
