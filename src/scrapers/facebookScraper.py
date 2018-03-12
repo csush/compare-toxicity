@@ -13,8 +13,8 @@ page_id = ""
 file_id = page_id                           # set file_id same as page_id
 
 # input date formatted as YYYY-MM-DD
-since_date = ""
-until_date = ""
+since_date = "2017-01-01"
+until_date = "2018-03-11"
 
 access_token = app_id + "|" + app_secret
 
@@ -28,11 +28,12 @@ def request_until_succeed(url):
             if response.getcode() == 200:
                 success = True
         except Exception as e:
-            print(e)
+            #print(e)
             time.sleep(5)
 
-            print("Error for URL {}: {}".format(url, datetime.datetime.now()))
-            print("Retrying.")
+            #print("Error for URL {}: {}".format(url, datetime.datetime.now()))
+            #print("Retrying.")
+            return 0
 
     return response.read()
 
@@ -76,7 +77,10 @@ def getReactionsForStatuses(base_url):
 
         url = base_url + fields
 
-        data = json.loads(request_until_succeed(url))['data']
+        reqResult = request_until_succeed(url)
+
+        if(reqResult != 0):
+            data = json.loads(reqResult)['data']
 
         data_processed = set()  # set() removes rare duplicates in statuses
         for status in data:
@@ -161,7 +165,12 @@ def scrapeFacebookPageFeedStatus(page_id, access_token, since_date, until_date):
             base_url = base + node + parameters + after + since + until
 
             url = getFacebookPageFeedUrl(base_url)
-            statuses = json.loads(request_until_succeed(url))
+
+            reqResult = request_until_succeed(url)
+            
+            if(reqResult != 0):
+                statuses = json.loads(reqResult)
+
             reactions = getReactionsForStatuses(base_url)
 
             for status in statuses['data']:
@@ -246,7 +255,10 @@ def scrapeFacebookPageFeedComments(page_id, access_token):
                     # DEBUG: URL
                     # print(url)
                     
-                    comments = json.loads(request_until_succeed(url))
+                    reqResult = request_until_succeed(url)
+
+                    if(reqResult != 0):
+                        comments = json.loads(reqResult)
 
                     for comment in comments['data']:
                         comment_data = processFacebookComment(
@@ -268,8 +280,11 @@ def scrapeFacebookPageFeedComments(page_id, access_token):
 
                                 sub_url = getFacebookCommentFeedUrl(
                                     sub_base_url)
-                                sub_comments = json.loads(
-                                    request_until_succeed(sub_url))
+
+                                reqResult = request_until_succeed(sub_url)
+                                
+                                if(reqResult != 0):
+                                    sub_comments = json.loads(reqResult)
                                 
 
                                 for sub_comment in sub_comments['data']:
