@@ -613,7 +613,7 @@ import csv
 import os
 import matplotlib.pyplot as plt
 import numpy as np
-def plot(x, titleName):
+def plot_hist(x, titleName):
     plt.xlim([-1, 1])
     #bins = np.arange(-1, 1, 20)
     #np.histogram(x, bins=20)
@@ -714,18 +714,22 @@ if __name__ == '__main__':
     directory_facebook = 'facebook'
     if not os.path.exists(directory_facebook):
         os.makedirs(directory_facebook)
-    os.rename("arsenal_facebook_comments_overall_score.csv", "./facebook")
+    os.rename("arsenal_facebook_comments_overall_score.csv", 
+              "./facebook/arsenal_facebook_comments_overall_score.csv")
     print('arsenal facebook comments analysis finished')
     
     sentimentResult('arsenal_reddit_comments.csv')
     directory_reddit = 'reddit'
     if not os.path.exists(directory_reddit):
         os.makedirs(directory_reddit)
-    os.rename("arsenal_reddit_comments_overall_score.csv", "./reddit")
+    os.rename("arsenal_reddit_comments_overall_score.csv",
+              "./reddit/arsenal_reddit_comments_overall_score.csv")
     print('arsenal reddit comments analysis finished')
     
     myPlot('./facebook', 'Arsenal_demo_facebook')
     myPlot('./reddit', 'Arsenal_demo_reddit')
     
-    os.rename("arsenal_reddit_comments_all_score.csv", "./reddit")
-    os.rename("arsenal_facebook_comments_all_score.csv", "./facebook")
+    os.rename("arsenal_reddit_comments_all_score.csv", 
+              "./reddit/arsenal_reddit_comments_all_score.csv")
+    os.rename("arsenal_facebook_comments_all_score.csv",
+              "./facebook/arsenal_facebook_comments_all_score.csv")
