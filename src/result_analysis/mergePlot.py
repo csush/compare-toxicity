@@ -18,12 +18,13 @@ def plot_pie(sizes, titleName):
     explode = (0.1, 0.1, 0, 0, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
     
     fig1, ax1 = plt.subplots()
-    ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
+    ax1.pie(sizes, explode=explode, labels=labels, labeldistance=9999999, autopct='%1.1f%%',
             shadow=False, startangle=90)
     ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
     plt.title(titleName)
+    handles, labels = ax1.get_legend_handles_labels()
+    ax1.legend(handles, labels)
     plt.show()
-
 
 def mycsv_reader(csv_reader):
     while True:
@@ -89,4 +90,5 @@ def myPlot(dictname, titleName):
     #print("Data Volumn: ", len(score_sheet))
     np.array(score_sheet).astype(np.float)
     plot_hist(score_sheet, titleName)
-    # return score_sheet
+    #return score_sheet
+
