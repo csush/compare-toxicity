@@ -714,18 +714,18 @@ if __name__ == '__main__':
     directory_facebook = 'facebook'
     if not os.path.exists(directory_facebook):
         os.makedirs(directory_facebook)
-    os.rename("arsenal_facebook_overall_score.csv", "./facebook")
+    os.rename("arsenal_facebook_comments_overall_score.csv", "./facebook")
     print('arsenal facebook comments analysis finished')
     
     sentimentResult('arsenal_reddit_comments.csv')
     directory_reddit = 'reddit'
     if not os.path.exists(directory_reddit):
         os.makedirs(directory_reddit)
-    os.rename("arsenal_reddit_overall_score.csv", "./reddit")
+    os.rename("arsenal_reddit_comments_overall_score.csv", "./reddit")
     print('arsenal reddit comments analysis finished')
     
     myPlot('./facebook', 'Arsenal_demo_facebook')
     myPlot('./reddit', 'Arsenal_demo_reddit')
     
-    os.rename("arsenal_reddit_all_score.csv", "./reddit")
-    os.rename("arsenal_facebook_all_score.csv", "./facebook")
+    os.rename("arsenal_reddit_comments_all_score.csv", "./reddit")
+    os.rename("arsenal_facebook_comments_all_score.csv", "./facebook")
