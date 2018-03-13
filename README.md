@@ -24,7 +24,15 @@ Install nltk package for sentiment analysis:
 $ sudo pip install nltk
 ```
  
-*You can also installing packages in Anaconda
+*You can also installing packages in Anaconda*
  
 
 **Running Demo:**
+
+Demo introduction: 
+Demo inlcudes aotumatically extract newest 2000 comments from Reddit and 2000 comments under the topic of Arsenal in facebook and gunners in Reddit. Then the sentiments analysis model will kick in to achieve data preprocessing and analysis for each set of comments. Finally the pie chat and histogram of these two datasets will be plotted.
+
+*recommended environment: Python 2.7 qtconsole*
+```sh
+$ run demo.py
+```
